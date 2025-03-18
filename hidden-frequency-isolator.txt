@@ -1,0 +1,475 @@
+/**
+ * Hidden Frequency Isolator
+ * Gold Star Chip Project
+ * 
+ * Signal processing tool for extracting control communications 
+ * embedded within market noise.
+ */
+
+#include <iostream>
+#include <vector>
+#include <complex>
+#include <fstream>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <map>
+#include <json/json.h>
+
+// Constants
+const double GOLDEN_RATIO = 1.618033988749895;
+const std::vector<double> CONTROL_FREQUENCIES = {1.618, 2.718, 3.141, 4.669, 6.022, 6.626};
+const double DETECTION_THRESHOLD = 0.75;
+const int MIN_SEQUENCE_LENGTH = 5;
+
+typedef std::complex<double> Complex;
+typedef std::vector<Complex> ComplexVector;
+typedef std::vector<double> RealVector;
+
+class HiddenFrequencyIsolator {
+private:
+    // Configuration
+    double sensitivity;
+    bool verbose;
+    std::string outputPath;
+    
+    // Detection results
+    std::vector<std::map<std::string, double>> detectedFrequencies;
+    std::vector<std::map<std::string, std::string>> controlMessages;
+    
+    // Internal processing state
+    RealVector windowFunction;
+    
+public:
+    HiddenFrequencyIsolator(double sens = 0.85, bool verb = false, 
+                           const std::string& output = "frequencies.json") 
+        : sensitivity(sens), verbose(verb), outputPath(output) {
+        
+        // Initialize window function for signal processing
+        initializeWindow(256); // Default window size
+        
+        if (verbose) {
+            std::cout << "Hidden Frequency Isolator initialized with sensitivity: " 
+                     << sensitivity << std::endl;
+        }
+    }
+    
+    /**
+     * Process market data to isolate hidden control frequencies
+     */
+    bool processData(const std::string& filePath) {
+        if (verbose) {
+            std::cout << "Processing data from: " << filePath << std::endl;
+        }
+        
+        // Load price data
+        std::vector<RealVector> priceData = loadPriceData(filePath);
+        if (priceData.empty()) {
+            std::cerr << "Failed to load price data from " << filePath << std::endl;
+            return false;
+        }
+        
+        int symbolCount = priceData.size();
+        if (verbose) {
+            std::cout << "Loaded data for " << symbolCount << " symbols" << std::endl;
+        }
+        
+        // Process each symbol
+        for (int i = 0; i < symbolCount; ++i) {
+            if (verbose) {
+                std::cout << "Analyzing symbol " << (i+1) << " of " << symbolCount << std::endl;
+            }
+            
+            // Extract frequencies
+            auto frequencies = isolateFrequencies(priceData[i]);
+            
+            // Match against known control frequencies
+            auto controlSignals = matchControlFrequencies(frequencies);
+            
+            if (!controlSignals.empty()) {
+                std::map<std::string, double> detectionResult;
+                detectionResult["symbolIndex"] = i;
+                detectionResult["timestamp"] = getCurrentTimestamp();
+                
+                for (const auto& signal : controlSignals) {
+                    detectionResult[signal.first] = signal.second;
+                }
+                
+                detectedFrequencies.push_back(detectionResult);
+                
+                // Attempt to decode control messages
+                auto messages = decodeControlSignals(priceData[i], controlSignals);
+                if (!messages.empty()) {
+                    std::map<std::string, std::string> messageResult;
+                    messageResult["symbolIndex"] = std::to_string(i);
+                    messageResult["timestamp"] = std::to_string(getCurrentTimestamp());
+                    
+                    for (const auto& msg : messages) {
+                        messageResult[msg.first] = msg.second;
+                    }
+                    
+                    controlMessages.push_back(messageResult);
+                }
+            }
+        }
+        
+        if (verbose) {
+            std::cout << "Detected " << detectedFrequencies.size() << " hidden frequency patterns" << std::endl;
+            std::cout << "Decoded " << controlMessages.size() << " potential control messages" << std::endl;
+        }
+        
+        // Save results
+        saveResults();
+        
+        return true;
+    }
+    
+    /**
+     * Get detected frequencies
+     */
+    const std::vector<std::map<std::string, double>>& getDetectedFrequencies() const {
+        return detectedFrequencies;
+    }
+    
+    /**
+     * Get decoded control messages
+     */
+    const std::vector<std::map<std::string, std::string>>& getControlMessages() const {
+        return controlMessages;
+    }
+    
+private:
+    /**
+     * Initialize window function for signal processing
+     */
+    void initializeWindow(int size) {
+        // Hann window function
+        windowFunction.resize(size);
+        for (int i = 0; i < size; ++i) {
+            windowFunction[i] = 0.5 * (1 - cos(2 * M_PI * i / (size - 1)));
+        }
+    }
+    
+    /**
+     * Load price data from file
+     */
+    std::vector<RealVector> loadPriceData(const std::string& filePath) {
+        std::vector<RealVector> result;
+        
+        // In a real implementation, this would parse CSV/JSON data
+        // For demonstration, we'll return synthetic data
+        
+        // Generate 3 symbols with price data
+        for (int symbol = 0; symbol < 3; ++symbol) {
+            RealVector prices;
+            
+            // Generate price series with embedded frequencies
+            for (int i = 0; i < 1000; ++i) {
+                double base = 100.0 + 0.01 * i;
+                
+                // Add noise
+                double noise = (rand() % 100) / 1000.0;
+                
+                // Add embedded control frequency
+                double controlSignal = 0.0;
+                if (symbol == 1) { // Only embed in one symbol
+                    controlSignal = 0.5 * sin(2 * M_PI * CONTROL_FREQUENCIES[2] * i / 100.0);
+                }
+                
+                prices.push_back(base + noise + controlSignal);
+            }
+            
+            result.push_back(prices);
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Isolate frequencies using FFT
+     */
+    std::map<double, double> isolateFrequencies(const RealVector& priceData) {
+        std::map<double, double> frequencies;
+        
+        // In a real implementation, this would use FFTW library
+        // For demonstration, we'll simulate frequency detection
+        
+        // Window size for short-time Fourier transform
+        const int windowSize = std::min(256, static_cast<int>(priceData.size()));
+        
+        // Sliding window analysis
+        for (int start = 0; start <= static_cast<int>(priceData.size()) - windowSize; start += windowSize / 2) {
+            // Extract window
+            RealVector window(windowSize);
+            for (int i = 0; i < windowSize; ++i) {
+                window[i] = priceData[start + i] * windowFunction[i];
+            }
+            
+            // Perform simulated FFT
+            std::map<double, double> windowFreqs = simulateFFT(window);
+            
+            // Merge with overall frequencies
+            for (const auto& freq : windowFreqs) {
+                if (frequencies.find(freq.first) == frequencies.end()) {
+                    frequencies[freq.first] = freq.second;
+                } else {
+                    frequencies[freq.first] = std::max(frequencies[freq.first], freq.second);
+                }
+            }
+        }
+        
+        return frequencies;
+    }
+    
+    /**
+     * Simulate FFT calculation (simplified)
+     */
+    std::map<double, double> simulateFFT(const RealVector& window) {
+        std::map<double, double> result;
+        
+        // For demonstration, we'll look for specific frequencies
+        // In a real implementation, this would use FFTW
+        
+        for (double freq : CONTROL_FREQUENCIES) {
+            double power = 0.0;
+            
+            // Calculate power at this frequency
+            for (size_t i = 0; i < window.size(); ++i) {
+                double phase = 2 * M_PI * freq * i / window.size();
+                power += window[i] * sin(phase);
+            }
+            
+            power = fabs(power) / window.size();
+            
+            // Only record significant power
+            if (power > 0.01) {
+                result[freq] = power;
+            }
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Match detected frequencies against known control frequencies
+     */
+    std::map<std::string, double> matchControlFrequencies(const std::map<double, double>& frequencies) {
+        std::map<std::string, double> matches;
+        
+        for (const auto& freq : frequencies) {
+            // Check if this frequency matches a known control frequency
+            for (double controlFreq : CONTROL_FREQUENCIES) {
+                if (fabs(freq.first - controlFreq) < 0.05) {
+                    // Found a match, calculate confidence based on power and sensitivity
+                    double confidence = freq.second * sensitivity;
+                    
+                    if (confidence >= DETECTION_THRESHOLD) {
+                        // Format with 3 decimal places
+                        std::string freqStr = std::to_string(controlFreq);
+                        freqStr = freqStr.substr(0, freqStr.find(".") + 4);
+                        
+                        matches["freq_" + freqStr] = confidence;
+                    }
+                }
+            }
+        }
+        
+        return matches;
+    }
+    
+    /**
+     * Decode potential control signals from price data
+     */
+    std::map<std::string, std::string> decodeControlSignals(
+        const RealVector& priceData, 
+        const std::map<std::string, double>& controlSignals) {
+        
+        std::map<std::string, std::string> messages;
+        
+        // For each detected control frequency
+        for (const auto& signal : controlSignals) {
+            // Extract frequency from key (freq_X.XXX)
+            std::string freqStr = signal.first.substr(5);
+            double frequency = std::stod(freqStr);
+            
+            // Extract potential message
+            std::string binaryMessage = extractBinarySequence(priceData, frequency);
+            
+            if (!binaryMessage.empty()) {
+                // Try to decode binary message
+                std::string decodedMessage = decodeBinaryMessage(binaryMessage);
+                
+                if (!decodedMessage.empty()) {
+                    messages[signal.first] = decodedMessage;
+                }
+            }
+        }
+        
+        return messages;
+    }
+    
+    /**
+     * Extract binary sequence from price data at specific frequency
+     */
+    std::string extractBinarySequence(const RealVector& priceData, double frequency) {
+        std::string binarySequence;
+        
+        // Calculate wavelength
+        int wavelength = static_cast<int>(round(1.0 / frequency * 100));
+        if (wavelength <= 0) wavelength = 1;
+        
+        // Need at least a few complete cycles
+        if (priceData.size() < wavelength * MIN_SEQUENCE_LENGTH) {
+            return "";
+        }
+        
+        // Demodulate the signal
+        for (size_t i = 0; i < priceData.size() - wavelength; i += wavelength) {
+            // Calculate local average
+            double avg = 0.0;
+            for (int j = 0; j < wavelength; ++j) {
+                avg += priceData[i + j];
+            }
+            avg /= wavelength;
+            
+            // Calculate trend over this wavelength
+            double start = priceData[i];
+            double end = priceData[i + wavelength - 1];
+            
+            // Remove trend from signal
+            double detrended = end - (start + (end - start) * (wavelength - 1) / wavelength);
+            
+            // Convert to binary bit based on sign
+            binarySequence += (detrended > 0) ? "1" : "0";
+        }
+        
+        return binarySequence;
+    }
+    
+    /**
+     * Attempt to decode binary message to ASCII
+     */
+    std::string decodeBinaryMessage(const std::string& binarySequence) {
+        // Need at least a few characters
+        if (binarySequence.length() < 24) {
+            return "";
+        }
+        
+        std::string result;
+        
+        // Try to decode as 8-bit ASCII
+        for (size_t i = 0; i <= binarySequence.length() - 8; i += 8) {
+            std::string byte = binarySequence.substr(i, 8);
+            int charCode = 0;
+            
+            for (int bit = 0; bit < 8; ++bit) {
+                if (byte[bit] == '1') {
+                    charCode |= (1 << (7 - bit));
+                }
+            }
+            
+            // Only accept printable ASCII
+            if (charCode >= 32 && charCode <= 126) {
+                result += static_cast<char>(charCode);
+            } else {
+                // Non-printable character, abort
+                return "";
+            }
+        }
+        
+        // Verify the message makes some sense
+        if (result.length() >= 3) {
+            return result;
+        }
+        
+        return "";
+    }
+    
+    /**
+     * Get current timestamp
+     */
+    double getCurrentTimestamp() {
+        return static_cast<double>(time(nullptr));
+    }
+    
+    /**
+     * Save results to JSON file
+     */
+    void saveResults() {
+        Json::Value root;
+        
+        // Add metadata
+        root["timestamp"] = getCurrentTimestamp();
+        root["sensitivity"] = sensitivity;
+        
+        // Add detected frequencies
+        Json::Value freqArray(Json::arrayValue);
+        for (const auto& freq : detectedFrequencies) {
+            Json::Value freqObj;
+            for (const auto& item : freq) {
+                freqObj[item.first] = item.second;
+            }
+            freqArray.append(freqObj);
+        }
+        root["detectedFrequencies"] = freqArray;
+        
+        // Add control messages
+        Json::Value msgArray(Json::arrayValue);
+        for (const auto& msg : controlMessages) {
+            Json::Value msgObj;
+            for (const auto& item : msg) {
+                msgObj[item.first] = item.second;
+            }
+            msgArray.append(msgObj);
+        }
+        root["controlMessages"] = msgArray;
+        
+        // Write to file
+        std::ofstream outFile(outputPath);
+        if (!outFile.is_open()) {
+            std::cerr << "Failed to open output file: " << outputPath << std::endl;
+            return;
+        }
+        
+        Json::StyledWriter writer;
+        outFile << writer.write(root);
+        outFile.close();
+        
+        if (verbose) {
+            std::cout << "Results saved to " << outputPath << std::endl;
+        }
+    }
+};
+
+int main(int argc, char** argv) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <input_file> [output_file] [sensitivity]" << std::endl;
+        return 1;
+    }
+    
+    std::string inputFile = argv[1];
+    std::string outputFile = (argc > 2) ? argv[2] : "frequencies.json";
+    double sensitivity = (argc > 3) ? std::stod(argv[3]) : 0.85;
+    
+    std::cout << "Hidden Frequency Isolator" << std::endl;
+    std::cout << "Gold Star Chip Project" << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+    
+    HiddenFrequencyIsolator isolator(sensitivity, true, outputFile);
+    
+    if (!isolator.processData(inputFile)) {
+        std::cerr << "Processing failed" << std::endl;
+        return 1;
+    }
+    
+    const auto& freqs = isolator.getDetectedFrequencies();
+    const auto& msgs = isolator.getControlMessages();
+    
+    std::cout << "----------------------------------------" << std::endl;
+    std::cout << "Processing complete" << std::endl;
+    std::cout << "Detected " << freqs.size() << " control frequencies" << std::endl;
+    std::cout << "Decoded " << msgs.size() << " potential control messages" << std::endl;
+    std::cout << "Results saved to " << outputFile << std::endl;
+    
+    return 0;
+}

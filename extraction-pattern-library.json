@@ -1,0 +1,472 @@
+{
+  "metadata": {
+    "version": "1.2.3",
+    "description": "Gold Star Chip - Documented Capital Harvesting Signatures",
+    "lastUpdated": "2025-03-15T14:23:47Z",
+    "classification": "RESTRICTED",
+    "disclaimer": "This library contains pattern templates for educational and documentation purposes only"
+  },
+  "patternCategories": [
+    "liquidityVacuum",
+    "engineeredReversal",
+    "temporalImpossibility",
+    "harmonicManipulation",
+    "capitalHarvesting",
+    "quantumCorrelation"
+  ],
+  "patterns": {
+    "liquidityVacuum": {
+      "description": "Engineered price vacuum that forces liquidations",
+      "subTypes": [
+        "microvacuum",
+        "cascadingLiquidation",
+        "trappedOrder"
+      ],
+      "signatures": {
+        "microvacuum": {
+          "description": "Small-scale liquidity removal to trigger stop-losses",
+          "timeScale": "seconds",
+          "magnitudeRange": [0.5, 2.0],
+          "pattern": [1.0, 0.618, 0.382, 0.236, 0.382, 0.618],
+          "confidence": 0.82,
+          "occurrenceFrequency": "daily",
+          "recoverySignature": [0.618, 0.786, 0.882, 0.945, 1.0],
+          "examples": [
+            {
+              "date": "2024-11-03T14:32:17Z",
+              "symbol": "BTCUSD",
+              "magnitude": 1.2
+            },
+            {
+              "date": "2024-12-14T09:47:23Z",
+              "symbol": "ES_F",
+              "magnitude": 0.8
+            }
+          ]
+        },
+        "cascadingLiquidation": {
+          "description": "Multi-stage liquidity removal triggering cascading failures",
+          "timeScale": "minutes",
+          "magnitudeRange": [2.0, 8.0],
+          "pattern": [1.0, 0.9, 0.7, 0.5, 0.3, 0.1, 0.05, 0.2, 0.4],
+          "confidence": 0.88,
+          "occurrenceFrequency": "weekly",
+          "recoverySignature": [0.4, 0.5, 0.618, 0.786, 0.882, 0.945, 1.0],
+          "examples": [
+            {
+              "date": "2024-09-15T20:14:53Z",
+              "symbol": "ETH-USD",
+              "magnitude": 4.7
+            }
+          ]
+        },
+        "trappedOrder": {
+          "description": "Precise liquidity vacuum targeting specific large orders",
+          "timeScale": "milliseconds",
+          "magnitudeRange": [0.3, 1.5],
+          "pattern": [1.0, 0.995, 0.95, 0.85, 0.65, 0.45, 0.25, 0.15, 0.25, 0.45],
+          "confidence": 0.91,
+          "occurrenceFrequency": "daily",
+          "recoverySignature": [0.45, 0.65, 0.85, 0.95, 1.0],
+          "examples": [
+            {
+              "date": "2024-10-22T15:32:47.123Z",
+              "symbol": "NQ_F",
+              "magnitude": 0.7
+            }
+          ]
+        }
+      },
+      "controlMechanisms": {
+        "initiationTrigger": "volumeDrop",
+        "executionMethod": "layeredCancellation",
+        "targetIdentification": "orderBookImbalance"
+      },
+      "historicalEffectiveness": 0.93,
+      "countermeasures": [
+        "decentralizedLiquidity",
+        "randomizedOrderPlacement",
+        "partialExecution"
+      ]
+    },
+    "engineeredReversal": {
+      "description": "Coordinated price reversal at pre-determined levels",
+      "subTypes": [
+        "falseBreakout",
+        "magnitudeCascade",
+        "trendReversal"
+      ],
+      "signatures": {
+        "falseBreakout": {
+          "description": "Price pushed beyond technical level then sharply reversed",
+          "timeScale": "minutes",
+          "magnitudeRange": [1.0, 3.0],
+          "pattern": [1.0, 1.05, 1.1, 1.15, 1.1, 0.95, 0.8, 0.75],
+          "confidence": 0.84,
+          "occurrenceFrequency": "daily",
+          "examples": [
+            {
+              "date": "2024-11-07T10:22:43Z",
+              "symbol": "SPY",
+              "magnitude": 1.4
+            }
+          ]
+        },
+        "magnitudeCascade": {
+          "description": "Engineered reversal causing cascading position unwinding",
+          "timeScale": "hours",
+          "magnitudeRange": [2.5, 7.0],
+          "pattern": [1.0, 1.02, 1.05, 1.07, 1.1, 1.15, 1.05, 0.9, 0.7, 0.5, 0.4],
+          "confidence": 0.86,
+          "occurrenceFrequency": "weekly",
+          "examples": [
+            {
+              "date": "2024-08-14T13:45:22Z",
+              "symbol": "CL_F",
+              "magnitude": 3.8
+            }
+          ]
+        },
+        "trendReversal": {
+          "description": "Complete trend reversal at predetermined price levels",
+          "timeScale": "days",
+          "magnitudeRange": [5.0, 15.0],
+          "pattern": [1.0, 1.05, 1.1, 1.15, 1.2, 1.25, 1.2, 1.1, 0.95, 0.85, 0.75, 0.7],
+          "confidence": 0.89,
+          "occurrenceFrequency": "monthly",
+          "examples": [
+            {
+              "date": "2024-07-22T00:00:00Z",
+              "symbol": "GOLD",
+              "magnitude": 8.3
+            }
+          ]
+        }
+      },
+      "controlMechanisms": {
+        "initiationTrigger": "technicalLevelBreach",
+        "executionMethod": "coordinatedOrderFlow",
+        "targetIdentification": "positionConcentration"
+      },
+      "historicalEffectiveness": 0.87,
+      "countermeasures": [
+        "partialPositionSizing",
+        "asymmetricStopLoss",
+        "multipleTimeframeConfirmation"
+      ]
+    },
+    "temporalImpossibility": {
+      "description": "Price movement that precedes its supposed catalyst",
+      "subTypes": [
+        "newsAnticipation",
+        "dataLeakage",
+        "ghostSignal"
+      ],
+      "signatures": {
+        "newsAnticipation": {
+          "description": "Price moves precisely before news announcement",
+          "timeScale": "seconds",
+          "precognitionWindow": [3, 10],
+          "pattern": [1.0, 1.02, 1.05, 1.1, 1.2, 1.25],
+          "confidence": 0.87,
+          "temporalPrecision": "millisecond",
+          "examples": [
+            {
+              "date": "2024-10-04T14:29:59.732Z",
+              "symbol": "AAPL",
+              "catalyst": "Earnings",
+              "precognitionMs": 7.6
+            }
+          ]
+        },
+        "dataLeakage": {
+          "description": "Price reflects unreleased economic data",
+          "timeScale": "milliseconds",
+          "precognitionWindow": [5, 20],
+          "pattern": [1.0, 1.01, 1.03, 1.06, 1.1, 1.15, 1.2],
+          "confidence": 0.92,
+          "temporalPrecision": "microsecond",
+          "examples": [
+            {
+              "date": "2024-09-06T08:29:59.873Z",
+              "symbol": "EURUSD",
+              "catalyst": "NonFarmPayroll",
+              "precognitionMs": 12.3
+            }
+          ]
+        },
+        "ghostSignal": {
+          "description": "Price reaction to non-public communication",
+          "timeScale": "minutes",
+          "precognitionWindow": [1, 5],
+          "pattern": [1.0, 1.005, 1.01, 1.02, 1.04, 1.06, 1.1],
+          "confidence": 0.83,
+          "temporalPrecision": "second",
+          "examples": [
+            {
+              "date": "2024-08-12T15:42:17Z",
+              "symbol": "XAU",
+              "catalyst": "GeoopoliticalEvent",
+              "precognitionMs": 74000
+            }
+          ]
+        }
+      },
+      "controlMechanisms": {
+        "initiationTrigger": "privilegedInformation",
+        "executionMethod": "distributedExecution",
+        "targetIdentification": "liquidityMapping"
+      },
+      "historicalEffectiveness": 0.96,
+      "countermeasures": [
+        "randomizedEntryTiming",
+        "multipleInformationSources",
+        "eventRiskAvoidance"
+      ]
+    },
+    "harmonicManipulation": {
+      "description": "Golden ratio-based price control mechanism",
+      "subTypes": [
+        "fibonacciRetracement",
+        "goldenRatioExpansion",
+        "harmonicPattern"
+      ],
+      "signatures": {
+        "fibonacciRetracement": {
+          "description": "Price retraces exactly to Fibonacci levels",
+          "timeScale": "hours",
+          "pattern": [1.0, 0.786, 0.618, 0.5, 0.382, 0.236, 0.0],
+          "confidence": 0.85,
+          "fibonacciPrecision": 0.9998,
+          "examples": [
+            {
+              "date": "2024-11-12T00:00:00Z",
+              "symbol": "AMZN",
+              "keyLevels": [0.382, 0.618]
+            }
+          ]
+        },
+        "goldenRatioExpansion": {
+          "description": "Price expands in perfect Golden Ratio proportions",
+          "timeScale": "days",
+          "pattern": [1.0, 1.618, 2.618, 4.236, 6.854],
+          "confidence": 0.84,
+          "fibonacciPrecision": 0.9996,
+          "examples": [
+            {
+              "date": "2024-06-15T00:00:00Z",
+              "symbol": "QQQ",
+              "keyLevels": [1.618, 2.618]
+            }
+          ]
+        },
+        "harmonicPattern": {
+          "description": "Complex harmonic pattern with perfect proportions",
+          "timeScale": "weeks",
+          "patterns": ["Gartley", "Butterfly", "Bat", "Crab", "Shark"],
+          "confidence": 0.87,
+          "fibonacciPrecision": 0.9997,
+          "examples": [
+            {
+              "date": "2024-09-22T00:00:00Z",
+              "symbol": "TSLA",
+              "pattern": "Butterfly",
+              "keyRatios": [0.786, 1.272, 1.618]
+            }
+          ]
+        }
+      },
+      "controlMechanisms": {
+        "initiationTrigger": "algorithmicRecognition",
+        "executionMethod": "proportionalExecution",
+        "targetIdentification": "psychologicalClusters"
+      },
+      "historicalEffectiveness": 0.89,
+      "countermeasures": [
+        "nonLinearPositioning",
+        "antiProportionalEntries",
+        "patternAvoidance"
+      ]
+    },
+    "capitalHarvesting": {
+      "description": "Systematic retail capital extraction pattern",
+      "subTypes": [
+        "retailFlush",
+        "optionPinning",
+        "sentimentReversal"
+      ],
+      "signatures": {
+        "retailFlush": {
+          "description": "Coordinated movement to clear retail positions",
+          "timeScale": "hours",
+          "pattern": [1.0, 1.05, 1.1, 1.15, 1.05, 0.95, 0.85, 0.75, 0.65],
+          "confidence": 0.86,
+          "targetedSegment": "retailTraders",
+          "occurrenceFrequency": "weekly",
+          "examples": [
+            {
+              "date": "2024-10-04T09:30:00Z",
+              "symbol": "SPY",
+              "capitalHarvestedEstimate": "$43M"
+            }
+          ]
+        },
+        "optionPinning": {
+          "description": "Price manipulated to optimal option expiry level",
+          "timeScale": "days",
+          "pattern": [1.0, 1.02, 1.04, 1.06, 1.04, 1.02, 1.0, 0.98],
+          "confidence": 0.92,
+          "targetedSegment": "optionBuyers",
+          "occurrenceFrequency": "monthly",
+          "examples": [
+            {
+              "date": "2024-11-15T16:00:00Z",
+              "symbol": "NVDA",
+              "optionStrike": 120,
+              "capitalHarvestedEstimate": "$87M"
+            }
+          ]
+        },
+        "sentimentReversal": {
+          "description": "Price moved to trigger emotional responses",
+          "timeScale": "days",
+          "pattern": [1.0, 1.05, 1.1, 1.15, 1.2, 1.05, 0.9, 0.8],
+          "confidence": 0.84,
+          "targetedSegment": "sentimentTraders",
+          "occurrenceFrequency": "biweekly",
+          "examples": [
+            {
+              "date": "2024-08-23T00:00:00Z",
+              "symbol": "BTC-USD",
+              "sentimentShift": "bullish to bearish",
+              "capitalHarvestedEstimate": "$122M"
+            }
+          ]
+        }
+      },
+      "controlMechanisms": {
+        "initiationTrigger": "sentimentExtreme",
+        "executionMethod": "sequencedOrderFlow",
+        "targetIdentification": "positionTransparency"
+      },
+      "historicalEffectiveness": 0.94,
+      "countermeasures": [
+        "emotionalDetachment",
+        "counterSentimentPositioning",
+        "informationAsymmetryReduction"
+      ]
+    },
+    "quantumCorrelation": {
+      "description": "Statistically impossible synchronicity across assets",
+      "subTypes": [
+        "crossAssetSynchronicity",
+        "inverseCorrelationBreakdown",
+        "marketwidePulse"
+      ],
+      "signatures": {
+        "crossAssetSynchronicity": {
+          "description": "Perfect synchronization of uncorrelated assets",
+          "timeScale": "milliseconds",
+          "pattern": [1.0, 1.01, 1.02, 1.03, 1.04, 1.05],
+          "confidence": 0.91,
+          "correlationThreshold": 0.997,
+          "examples": [
+            {
+              "date": "2024-09-17T10:23:45.123Z",
+              "assets": ["GOLD", "SPY", "EURUSD", "BTC-USD"],
+              "synchronicityDurationMs": 237
+            }
+          ]
+        },
+        "inverseCorrelationBreakdown": {
+          "description": "Normally inverse assets moving in perfect harmony",
+          "timeScale": "seconds",
+          "pattern": [1.0, 1.005, 1.01, 1.015, 1.02, 1.025],
+          "confidence": 0.94,
+          "correlationShift": "negative to positive",
+          "examples": [
+            {
+              "date": "2024-07-03T15:42:12.345Z",
+              "assets": ["VIX", "SPY"],
+              "normalCorrelation": -0.87,
+              "manipulatedCorrelation": 0.96,
+              "durationSeconds": 14
+            }
+          ]
+        },
+        "marketwidePulse": {
+          "description": "Rhythmic price oscillation across all markets",
+          "timeScale": "minutes",
+          "pattern": [1.0, 1.01, 1.0, 0.99, 1.0, 1.01],
+          "confidence": 0.89,
+          "frequencyHz": 0.0618,
+          "examples": [
+            {
+              "date": "2024-12-05T08:00:00Z",
+              "affectedMarkets": 94,
+              "durationMinutes": 17
+            }
+          ]
+        }
+      },
+      "controlMechanisms": {
+        "initiationTrigger": "globalSignal",
+        "executionMethod": "synchronizedExecution",
+        "targetIdentification": "systemicVulnerability"
+      },
+      "historicalEffectiveness": 0.98,
+      "countermeasures": [
+        "assetIsolation",
+        "timeframeDistribution",
+        "correlationAnalysis"
+      ]
+    }
+  },
+  "puppetMasterRegistry": {
+    "PM-ALPHA": {
+      "signatureFrequency": 1.618,
+      "primaryPatterns": ["harmonicManipulation", "liquidityVacuum"],
+      "targetedMarkets": ["equities", "indices"],
+      "firstDetected": "2023-04-12T00:00:00Z",
+      "lastActive": "2025-03-01T00:00:00Z",
+      "detectionConfidence": 0.92,
+      "estimatedCapitalImpact": "$7.8B"
+    },
+    "PM-BETA": {
+      "signatureFrequency": 2.718,
+      "primaryPatterns": ["engineeredReversal", "capitalHarvesting"],
+      "targetedMarkets": ["commodities", "forex"],
+      "firstDetected": "2023-07-28T00:00:00Z",
+      "lastActive": "2025-02-14T00:00:00Z",
+      "detectionConfidence": 0.89,
+      "estimatedCapitalImpact": "$12.3B"
+    },
+    "PM-GAMMA": {
+      "signatureFrequency": 3.141,
+      "primaryPatterns": ["temporalImpossibility", "quantumCorrelation"],
+      "targetedMarkets": ["cryptocurrencies", "derivatives"],
+      "firstDetected": "2023-02-19T00:00:00Z",
+      "lastActive": "2025-03-12T00:00:00Z",
+      "detectionConfidence": 0.94,
+      "estimatedCapitalImpact": "$18.6B"
+    },
+    "PM-DELTA": {
+      "signatureFrequency": 4.669,
+      "primaryPatterns": ["liquidityVacuum", "quantumCorrelation"],
+      "targetedMarkets": ["bonds", "volatility"],
+      "firstDetected": "2023-11-03T00:00:00Z",
+      "lastActive": "2025-01-22T00:00:00Z",
+      "detectionConfidence": 0.87,
+      "estimatedCapitalImpact": "$9.2B"
+    },
+    "PM-EPSILON": {
+      "signatureFrequency": 6.022,
+      "primaryPatterns": ["capitalHarvesting", "engineeredReversal"],
+      "targetedMarkets": ["options", "futures"],
+      "firstDetected": "2024-01-15T00:00:00Z",
+      "lastActive": "2025-03-07T00:00:00Z",
+      "detectionConfidence": 0.91,
+      "estimatedCapitalImpact": "$14.7B"
+    }
+  }
+}
